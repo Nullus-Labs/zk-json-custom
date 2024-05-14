@@ -5,16 +5,16 @@ Welcome to ZK-JSON!
 ## Setup
 1. Visit [zkjson.com](https://zkjson.com) to upload your JSON file.
 2. Follow the instructions on the website to provide information about your desired editing rules.
-3. You will receive two files: `circuitTypes.go` and `rawdata.json`.
+3. You will receive two files: `circuitTypes.go` and `rawdata_processed.json`.
   - `circuitTypes.go`: Contains the main body of your circuit.
-  - `rawdata.json`: Contains all information about the JSON type and corresponding editing rules.
+  - `rawdata_processed.json`: Contains all information about the JSON type and corresponding editing rules.
 
 ## Complete Sample
-Once you have `circuitTypes.go`, move this file to the `sample/circuit/` directory.
+Once you have `circuitTypes.go`, move this file to the `circuit/` directory.
 
-Move the `rawdata.json` file to the `sample/files` directory.
+Move the `rawdata_processed.json` file to the `files` directory.
 
-Additionally, place your pre-edited JSON file `oldProfile.json` and post-edited JSON file `newProfile.json` in the `sample/files` directory.
+Additionally, place your pre-edited JSON file `oldProfile.json` and post-edited JSON file `newProfile.json` in the `files` directory.
 
 ## Run Program
 1. Open a terminal and navigate to the `sample` directory.
@@ -26,7 +26,7 @@ Additionally, place your pre-edited JSON file `oldProfile.json` and post-edited 
     ```sh
     go run main.go generateProof
     ```
-   If you want to see the proof content, navigate to `sample/utils/proof/proof.txt`.
+   If you want to see the proof content, navigate to `utils/proof/proof.txt`.
 4. **Verify Proof:** To verify the proof, run:
     ```sh
     go run main.go verifyProof
