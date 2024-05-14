@@ -10,26 +10,31 @@ Welcome to ZK-JSON!
   - `rawdata_processed.json`: Contains all information about the JSON type and corresponding editing rules.
 
 ## Complete Sample
-Once you have `circuitTypes.go`, move this file to the `circuit/` directory.
+Once you have `circuitTypes.go`, move this file to the `circuit` directory.
 
 Move the `rawdata_processed.json` file to the `files` directory.
 
 Additionally, place your pre-edited JSON file `oldProfile.json` and post-edited JSON file `newProfile.json` in the `files` directory.
 
 ## Run Program
-1. Open a terminal and navigate to the `sample` directory.
-2. **Setup Circuit:** First, set up the circuit and generate the Rank-1 Constraint System, proving, and verifying keys by running the following command:
+1. Open a terminal and navigate to this repo.
+2. **Build Project** First, build the Go project using the following commands:
     ```sh
-    go run main.go setup
+    go build -o ZK-JSON
+    chmod +x ZK-JSON 
     ```
-3. **Generate Proof:** To generate the proof, run:
+4. **Setup Circuit:** Set up the circuit and generate the Rank-1 Constraint System, proving, and verifying keys by running the following command:
     ```sh
-    go run main.go generateProof
+    ./ZK-JSON setup
+    ```
+5. **Generate Proof:** To generate the proof, run:
+    ```sh
+    ./ZK-JSON generateProof
     ```
    If you want to see the proof content, navigate to `utils/proof/proof.txt`.
-4. **Verify Proof:** To verify the proof, run:
+6. **Verify Proof:** To verify the proof, run:
     ```sh
-    go run main.go verifyProof
+    ./ZK-JSON verifyProof
     ```
    If no errors occur during the verification process, the verification is successful.
 
