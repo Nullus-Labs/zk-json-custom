@@ -3,7 +3,7 @@
 Welcome to ZK-JSON!
 
 ## Setup
-1. Visit [zkjson.com](https://zkjson.com) to upload your JSON file.
+1. Visit [zkjson.com](zkjson.com) to upload your JSON file.
 2. Follow the instructions on the website to provide information about your desired editing rules.
 3. You will receive two files: `circuitTypes.go` and `rawdata_processed.json`.
   - `circuitTypes.go`: Contains the main body of your circuit.
