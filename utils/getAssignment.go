@@ -3,12 +3,13 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/consensys/gnark-crypto/ecc/bn254/fr"
-	"github.com/consensys/gnark/frontend"
 	"io/ioutil"
 	"math/big"
 	"os"
-	"github.com/Nullus-Labs/zk-json-custom/circuit"
+	"sample/circuit"
+
+	"github.com/consensys/gnark-crypto/ecc/bn254/fr"
+	"github.com/consensys/gnark/frontend"
 )
 
 const MaxRecLen = 100

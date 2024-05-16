@@ -2,11 +2,13 @@ package utils
 
 import (
 	"fmt"
-	"github.com/Nullus-Labs/zk-json-custom/circuit"
+	"math"
+	"sample/circuit"
 
-	"github.com/consensys/gnark/frontend"
 	"reflect"
 	"strings"
+
+	"github.com/consensys/gnark/frontend"
 )
 
 type Profile struct {
@@ -26,28 +28,32 @@ func EmptyInteger(maxDigit ...int) circuit.Integer {
 }
 
 func MakeInteger(x int64, maxDigit int) circuit.Integer {
+	if x >= int64(math.Pow10(maxDigit)) {
+		panic("Integer is larger than maxDigit")
+	}
 	return circuit.Integer{
 		X:        frontend.Variable(x),
 		MaxDigit: maxDigit}
 }
 
 func EmptyString(maxLen int) circuit.String {
-	ret := make(circuit.String, maxLen)
+	ret := make(circuit.String, maxLen+1)
 	ret[0] = 0
-	for i := 1; i < maxLen; i++ {
+	for i := 1; i < maxLen+1; i++ {
 		ret[i] = circuit.DUMMY
 	}
 	return ret
 }
 
 func MakeString(input string, maxLen int) circuit.String {
+	fmt.Println(input, maxLen)
 	ascii := circuit.StringToAscii(input)
-	x := make(circuit.String, maxLen)
+	x := make(circuit.String, maxLen+1)
 	x[0] = len(ascii)
 	for i := 1; i < len(ascii)+1; i++ {
 		x[i] = ascii[i-1]
 	}
-	for i := len(ascii) + 1; i < maxLen; i++ {
+	for i := len(ascii) + 1; i < maxLen+1; i++ {
 		x[i] = circuit.DUMMY
 	}
 	return x

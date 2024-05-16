@@ -2,19 +2,21 @@ package utils
 
 import (
 	"encoding/json"
+	"io"
+	"os"
+	"path"
+	"strings"
+
 	"github.com/consensys/gnark-crypto/ecc"
 	"github.com/consensys/gnark/backend/groth16"
 	"github.com/consensys/gnark/frontend"
 	"github.com/consensys/gnark/frontend/cs/r1cs"
 	"github.com/iancoleman/orderedmap"
-	"io/ioutil"
-	"os"
-	"path"
-	"strings"
 )
 
 const (
-	outputDir = "utils/proof"
+	outputDir      = "utils/proof"
+	maxCircuitSize = 500000
 )
 
 func capitalizeKeys(data []byte) ([]byte, error) {
@@ -51,19 +53,29 @@ func capitalizeKeys(data []byte) ([]byte, error) {
 
 // modifyJSON reads a JSON file, capitalizes the keys preserving the order, and writes the modified JSON back to a new file.
 func modifyJSON(originalFilename, newFilename string) error {
-	content, err := ioutil.ReadFile(originalFilename)
+	file, err := os.Open(originalFilename)
 	if err != nil {
 		return err
 	}
+	content, err := io.ReadAll(file)
+	if err != nil {
+		return err
+	}
+	file.Close()
 
 	modifiedContent, err := capitalizeKeys(content)
 	if err != nil {
 		return err
 	}
-
-	if err := ioutil.WriteFile(newFilename, modifiedContent, 0644); err != nil {
+	file2, err := os.Create(newFilename)
+	if err != nil {
 		return err
 	}
+	_, err = file2.WriteString(string(modifiedContent))
+	if err != nil {
+		return err
+	}
+	file2.Close()
 
 	return nil
 }
@@ -84,7 +96,14 @@ func Setup() {
 		panic(err)
 	}
 
+	if cs.GetNbConstraints() > maxCircuitSize {
+		panic("Circuit too large. Please re-adjust the edit limit to reduce the maximum size of the JSON document.")
+	}
+
 	pk, vk, err := groth16.Setup(cs)
+	if err != nil {
+		panic(err)
+	}
 	f, err := os.Create(path.Join(outputDir, "profile.vk"))
 	if err != nil {
 		panic(err)
@@ -93,6 +112,7 @@ func Setup() {
 	if err != nil {
 		panic(err)
 	}
+	defer f.Close()
 
 	fpk, err := os.Create(path.Join(outputDir, "profile.pk"))
 	if err != nil {
@@ -102,6 +122,7 @@ func Setup() {
 	if err != nil {
 		panic(err)
 	}
+	defer fpk.Close()
 
 	fr, err := os.Create(path.Join(outputDir, "profile.r1cs"))
 	if err != nil {
@@ -111,4 +132,5 @@ func Setup() {
 	if err != nil {
 		panic(err)
 	}
+	defer fr.Close()
 }
